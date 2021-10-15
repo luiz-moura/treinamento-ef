@@ -1,0 +1,1 @@
+[{"name":"MURILO","points":-3,"time":21},{"name":"HERMES","points":3,"time":17},{"name":"GABRIEL","points":3,"time":21},{"name":"HERMES","points":4,"time":14},{"name":"HERMES","points":5,"time":12},{"name":"MURILO","points":5,"time":12},{"name":"HERMES","points":6,"time":11},{"name":"MURILO","points":7,"time":8},{"name":"LUIZ","points":6,"time":9}]
