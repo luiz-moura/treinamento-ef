@@ -40,6 +40,32 @@ class Dicionario
     }
   }
 
+  public function remove(int|string $group, $word=null) : void 
+  {
+    if (is_null($word)) {
+      if (isInteger($group)) {
+        $index = $group - 1;
+        array_splice($this->groups, $index, 1);
+      } else {
+        unset($this->groups[$group]);
+      }
+    } else {
+      $keys = array_keys($this->groups);
+      $key = $group - 1;
+
+      if (isset($keys[$key])) {
+        $keyGroup = $keys[$key];
+        $keyWord = array_search($word, $this->groups[$keyGroup]);
+
+        if (isInteger($word)) {
+          array_splice($this->groups[$keyGroup], $keyWord, 1);
+        } else {
+          unset($this->groups[$keyGroup][$keyWord]);
+        }
+      }
+    }
+  }
+
   public function isValidWord(string $input) : bool
   {
     if (preg_match('/^[\p{Latin}\s\-\_]+$/u', $input)) {
@@ -70,7 +96,7 @@ class Dicionario
     print("+----+------------------------------------------------+\n");
   }
 
-  public function printWords() : void
+  public function printTableWords() : void
   {
     print("+-----------------------------------------------------+\n");
     print("|                  LISTA DE PALAVRAS                  |\n");
@@ -81,8 +107,8 @@ class Dicionario
     $j = 1;
     foreach($this->groups as $group => $wordsInGroup) {
       foreach($wordsInGroup as $word) {
-        print(mb_str_pad("| " . $word, 28) . "| ");
-        print(mb_str_pad($i . " - " . $group, 24) . "|\n");
+        print(mb_str_pad("| $j - " . $word, 28) . "| ");
+        print(mb_str_pad("$i - " . $group, 24) . "|\n");
         $j++;
       }
       $i++;

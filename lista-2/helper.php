@@ -1,10 +1,12 @@
 <?php
 const PLAY = 1;
 const ADD_WORD = 2;
-const ADD_GROUP = 3;
+const REMOVE_WORD = 3;
 const SHOW_WORDS = 4;
-const SHOW_GROUPS = 5;
-const EXIT_GAME = 6;
+const ADD_GROUP = 5;
+const REMOVE_GROUP = 6;
+const SHOW_GROUPS = 7;
+const EXIT_GAME = 8;
 
 function isInteger(int|string $input) : string|bool
 {

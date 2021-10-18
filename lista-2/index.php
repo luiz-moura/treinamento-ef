@@ -24,10 +24,12 @@ function options() {
   print("+---+-------------------------------------------------+\n");
   print(mb_str_pad("| 1 | Jogar", 54) . "|\n");
   print(mb_str_pad("| 2 | Cadastrar Palavra", 54) . "|\n");
-  print(mb_str_pad("| 3 | Cadastrar Grupo", 54) . "|\n");
+  print(mb_str_pad("| 3 | Remover Palavra", 54) . "|\n");
   print(mb_str_pad("| 4 | Listar Palavras", 54) . "|\n");
-  print(mb_str_pad("| 5 | Listar Grupos", 54) . "|\n");
-  print(mb_str_pad("| 6 | Sair do jogo", 54) . "|\n");
+  print(mb_str_pad("| 5 | Cadastrar Grupo", 54) . "|\n");
+  print(mb_str_pad("| 6 | Remover Grupo", 54) . "|\n");
+  print(mb_str_pad("| 7 | Listar Grupos", 54) . "|\n");
+  print(mb_str_pad("| 8 | Sair do jogo", 54) . "|\n");
   print("+---+-------------------------------------------------+\n");
   $option = readline("Digite uma opção: ");
 
@@ -42,12 +44,20 @@ function options() {
       addWord();
       options();
       break;
+    case REMOVE_WORD:
+      removeWord();
+      options();
+      break;
     case ADD_GROUP:
       addGroup();
       options();
       break;
+    case REMOVE_GROUP:
+      removeGroup();
+      options();
+      break;
     case SHOW_WORDS:
-      $dicionario->printWords();
+      $dicionario->printTableWords();
       passthru('pause');
       options($words);
       break;
@@ -169,6 +179,43 @@ function addGroup() {
   if (!empty($inputGroup) && $dicionario->isValidWord($inputGroup)) {
     $dicionario->add($inputGroup);
     saveData($dicionario->toJson());
+  }
+}
+
+function removeGroup() {
+  global $dicionario;
+
+  $dicionario->printTableGroups();
+
+  print("+-----------------------------------------------------+\n");
+  print("|                    REMOVER GRUPO                    |\n");
+  print("+-----------------------------------------------------+\n");
+  print("|  Todas as palavras do grupo também seram removidas  |\n");
+  print("+-----------------------------------------------------+\n");
+
+  $inputGroup = readline("Digite um grupo (ID ou NOME): ");
+  
+  if (!empty($inputGroup)) {
+    $dicionario->remove($inputGroup);
+    // saveData($dicionario->toJson());
+  }
+}
+
+function removeWord() {
+  global $dicionario;
+
+  $dicionario->printTableWords();
+
+  print("+-----------------------------------------------------+\n");
+  print("|                   REMOVER PALAVRA                   |\n");
+  print("+-----------------------------------------------------+\n");
+
+  $inputGroup = readline("Digite o grupo da palavra (ID): ");
+  $inputWord = readline("Digite uma palavra (ID ou NOME): ");
+  
+  if (!empty($inputGroup) and !empty($inputWord)) {
+    $dicionario->remove($inputGroup, $inputWord);
+    // saveData($dicionario->toJson());
   }
 }
 
