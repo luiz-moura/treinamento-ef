@@ -3,12 +3,9 @@ require_once "helper.php";
 
 class Dicionario
 {
-  private $groups;
-
-  public function __construct(array $data)
-  {
-    $this->groups = $data;
-  }
+  public function __construct(
+    private array $groups,
+  ) {}
 
   /**
    * @return array{string, string}
@@ -35,8 +32,6 @@ class Dicionario
       } else {
         $this->groups[$group][] = $word;
       }
-      // $group = &$this->groups[$group];
-      // $group[] = $word;
     }
   }
 
@@ -86,7 +81,6 @@ class Dicionario
     print("+----+------------------------------------------------+\n");
     print("| ID |                      NOME                      |\n");
     print("+----+------------------------------------------------+\n");
-    // $groups = array_keys($this->groups);
     $i = 1;
     foreach($this->groups as $group => $wordsInGroup) {
       print(mb_str_pad("| " . $i, 5) . "| ");

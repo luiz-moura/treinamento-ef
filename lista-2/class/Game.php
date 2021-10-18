@@ -3,24 +3,15 @@ require_once "helper.php";
 
 Class Game 
 {
-  private string      $chosenWord;
-  private string      $chosenGroup;
-  private array       $keywords;
-  private int         $life;
-  private int         $totalPlayers;
-  private int         $currentPlayer;
-  private string|null $alert;
-
-  public function __construct(string $chosenWord, string $chosenGroup, int $totalPlayers)
-  {
-    $this->chosenWord = $chosenWord;
-    $this->chosenGroup = $chosenGroup;
-    $this->totalPlayers = $totalPlayers;
-    $this->life = 7;
-    $this->keywords = array();
-    $this->currentPlayer = 1;
-    $this->alert = null;
-  }
+  public function __construct(
+    private string      $chosenWord, 
+    private string      $chosenGroup, 
+    private int         $totalPlayers,
+    private array       $keywords = array(),
+    private int         $life = 7,
+    private int         $currentPlayer = 1,
+    private string|null $alert = null,
+  ) {}
 
   public function getChosenWord()  : string
   {
@@ -32,19 +23,9 @@ Class Game
     return $this->chosenGroup;
   }
 
-  public function getKeywords() : null|array
-  {
-    return $this->keywords;
-  }
-
   public function getLife() : int
   {
     return $this->life;
-  }
-
-  public function setTotalPlayers(int $total): void
-  {
-    $this->totalPlayers = $total;
   }
 
   public function getCurrentPlayer(): int 
@@ -111,15 +92,11 @@ Class Game
     $patternCountLetters = '/(?<!^)(?!$)/u';
     $total = preg_match_all($patternCountLetters, $this->chosenWord, $letters);
 
-    // mb_strlen($this->chosenWord, "UTF-8")
     return $total;
   }
 
   public function traits() : string
   {
-    // $patternTraits = array('/[\p{Latin}]/');
-    // $traits = preg_replace('/^[\p{Latin}\s]+$/u', "_", $this->chosenWord);
-
     $patternLetters = '/(?<!^)(?!$)/u';
     $letters = preg_split($patternLetters, $this->chosenWord);
     
@@ -146,7 +123,6 @@ Class Game
         $keywordToUpper = mb_strtoupper($keywordWithoutChars, "UTF-8");
         
         if ($keywordToUpper == $letterToUpper) {
-          // $traits[$index] = "$letter";
           $traits = mb_substr_replace($traits, $letter, $index, 1);
         }
       }
