@@ -28,9 +28,11 @@ Class Groups {
     print("+----+---------------------------------------+\n");
     print("| ID |                 NOME                  |\n");
     print("+----+---------------------------------------+\n");
+    $i = 1;
     foreach($this->getGroups() as $group) {
-      print("| " . mb_str_pad($group["id"], 3) . "| ");
+      print("| " . mb_str_pad($i, 3) . "| ");
       print(mb_str_pad($group["name"], 38) . "|\n");
+      $i++;
     }
     print("+----+---------------------------------------+\n");
   }
