@@ -1,4 +1,8 @@
 <?php
+function clearMen() {
+  popen('cls || clear','w');
+}
+
 function maiorValor(array $valores) : float {
   $valoresOrdenados = array();
 
@@ -24,7 +28,7 @@ function maiorValor(array $valores) : float {
       $i++;
     }
   }
-  
+
   return $valoresOrdenados[0];
 }
 
@@ -53,10 +57,26 @@ function formarPares(array $valores1, array $valores2) : array {
   return $pares;
 }
 
-function desordenar(array $valores) : array|null {
+function desordenar(array $valores) : array {
   $desordenados = array();
+  $utilizados = array();
 
-  $i = 0;
+  $dicionario = range(0, count($valores) - 1);
+
+  for ($i = 0; $i < count($valores); $i++) {
+    $dicionario = array_values(array_diff($dicionario, $utilizados));
+
+    if (count($dicionario) > 1) {
+      $chave = random_int($dicionario[0], max($dicionario));
+    } else {
+      $chave = $dicionario[0];
+    }
+    $desordenados[$i] = $valores[$chave];
+
+    array_push($utilizados, $chave);
+  }
+
+  /*$i = 0;
   $total = count($valores) - 1;
   $utilizados = array();
 
@@ -69,15 +89,25 @@ function desordenar(array $valores) : array|null {
 
     $desordenados[$i] = $valores[$aleatorio];
     $utilizados[] = $aleatorio;
-  }
+  }*/
+
+  /*
+  usort($valores, 'prioridade');
+  return $valores;
+  */
 
   return $desordenados;
 }
 
+function prioridade($a, $b) {
+  return rand(-1, 1);
+}
+
 function consultar(array $tabela, array $campos) : array {
   $resultado = array();
-
+  // campos = colunas (indice do vetor)
   $colunas = array_keys($tabela);
+
   foreach ($campos as $campo) {
     if (in_array($campo, $colunas)) {
       $resultado[$campo] = $tabela[$campo];
@@ -98,7 +128,6 @@ function ordenarValores(array $valores) : array {
 
     $ultimaVolta = count($valoresOrdenados) - 1;
     $i = 0;
-
     foreach ($valoresOrdenados as $key => $valorOrdenado) {
       if ($valor < $valorOrdenado) {
         array_splice($valoresOrdenados, $key, 0, $valor);
@@ -112,7 +141,7 @@ function ordenarValores(array $valores) : array {
       $i++;
     }
   }
-  
+
   return $valoresOrdenados;
 }
 
@@ -132,9 +161,8 @@ function inverterOrdem(array $valores) : array {
   $ordemInvertida = array();
 
   $total = count($valores) - 1;
-
-  for ($i = 0; $i <= $total; $i++) {
-    $ordemInvertida[$i] = $valores[$total - $i];
+  for ($i = $total; $i >= 0; $i--) {
+    array_push($ordemInvertida, $valores[$i]);
   }
 
   return $ordemInvertida;
@@ -142,19 +170,22 @@ function inverterOrdem(array $valores) : array {
 
 function achatarArrayMultidimensional(array $valores) : array {
   $simples = array();
-  foreach ($valores as $item) {
-    while ($item = array_shift($valores)) {
-      if (is_array($item)) {
-        if (is_array($item)) {
-          array_push($simples, ...achatarArrayMultidimensional($item));
-        } else {
-          array_push($simples, ...$item);
-        }
-      } else {
-        array_push($simples, $item);
-      }
+
+  while ($item = array_shift($valores)) {
+    if (is_array($item)) {
+      array_push($simples, ...achatarArrayMultidimensional($item));
+    } else {
+      array_push($simples, $item);
     }
   }
+
+  /*foreach ($valores as $item) {
+    if (is_array($item)) {
+      $simples = array_merge($simples, achatarArrayMultidimensional($item));
+    } else {
+      array_push($simples, $item);
+    }
+  }*/
 
   return $simples;
 }
