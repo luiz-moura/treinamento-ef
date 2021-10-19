@@ -76,7 +76,8 @@ function desordenar(array $valores) : array {
     array_push($utilizados, $chave);
   }
 
-  /*$i = 0;
+  /*
+  $i = 0;
   $total = count($valores) - 1;
   $utilizados = array();
 
@@ -89,12 +90,11 @@ function desordenar(array $valores) : array {
 
     $desordenados[$i] = $valores[$aleatorio];
     $utilizados[] = $aleatorio;
-  }*/
-
-  /*
-  usort($valores, 'prioridade');
-  return $valores;
+  }
   */
+
+  // usort($valores, 'prioridade');
+  // return $valores;
 
   return $desordenados;
 }
@@ -178,14 +178,6 @@ function achatarArrayMultidimensional(array $valores) : array {
       array_push($simples, $item);
     }
   }
-
-  /*foreach ($valores as $item) {
-    if (is_array($item)) {
-      $simples = array_merge($simples, achatarArrayMultidimensional($item));
-    } else {
-      array_push($simples, $item);
-    }
-  }*/
 
   return $simples;
 }
