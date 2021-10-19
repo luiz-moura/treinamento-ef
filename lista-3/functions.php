@@ -32,6 +32,18 @@ function maiorValor(array $valores) : float {
   return $valoresOrdenados[0];
 }
 
+function meuMaiorValor(array $valores)
+{
+  if (empty($valores)) return null;
+  if (count($valores) == 1) return $valores[0];
+
+  $valor = array_pop($valores);
+  $maior = meuMaiorValor($valores);
+
+  if ($valor > $maior) return $valor;
+  else                 return $maior;
+}
+
 function somarValores(array $valores) : float {
   $total = 0;
   foreach ($valores as $valor) {
@@ -57,6 +69,50 @@ function formarPares(array $valores1, array $valores2) : array {
   return $pares;
 }
 
+function meuDesordenar(array $valores) : array
+{
+  $rodadas = time() % 100;
+
+  for ($i = 0; $i < $rodadas; $i++) {
+    $valores = meuDesordenarBase($valores);
+  }
+
+  return $valores;
+}
+
+function meuDesordenarBase(array $valores) : array
+{
+  if (count($valores) == 1) {
+    return $valores;
+  }
+
+  $valor = array_pop($valores);
+  $resto = meuDesordenarBase($valores);
+
+  if ($valor % 2 == 0) {
+    return juntar($valor, $resto);
+  } else {
+    return juntar($resto, $valor);
+  }
+}
+
+function juntar($uno, $dos)
+{
+  if (!is_array($uno)) {
+    $uno = [$uno];
+  }
+
+  if (!is_array($dos)) {
+    $dos = [$dos];
+  }
+
+  foreach ($dos as $do) {
+    $uno[] = $do;
+  }
+
+  return $uno;
+}
+
 function desordenar(array $valores) : array {
   $desordenados = array();
   $utilizados = array();
@@ -67,7 +123,7 @@ function desordenar(array $valores) : array {
     $dicionario = array_values(array_diff($dicionario, $utilizados));
 
     if (count($dicionario) > 1) {
-      $chave = random_int($dicionario[0], max($dicionario));
+      $chave = random_int($dicionario[0], maiorValor($dicionario));
     } else {
       $chave = $dicionario[0];
     }
@@ -166,6 +222,12 @@ function inverterOrdem(array $valores) : array {
   }
 
   return $ordemInvertida;
+}
+
+function meuInverterOrdem(array $valores) : array {
+  $invertido = [];
+  while (!empty($valores)) $invertido[] = array_pop($valores);
+  return $invertido;
 }
 
 function achatarArrayMultidimensional(array $valores) : array {

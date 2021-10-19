@@ -5,7 +5,8 @@ clearMen();
 
 # i [Escreva uma função que receba um array de valores numéricos e retorne o valor mais alto.]
 $maior = maiorValor([1, 4, 2, 3, 5, 0]);
-print "(i) Maior valor: " . $maior . "\n";
+$meuMaiorValor = meuMaiorValor([1, 4, 2, 3, 5, 0, 78, 13, 7, 81]);
+print "(i) Maior valor: " . $meuMaiorValor . "\n";
 print("-----------------------------------------------------\n");
 
 # ii [Escreva uma função que receba um array de valores numéricos e retorne a soma dos valores.]
@@ -27,7 +28,7 @@ var_dump($valoresEmPares);
 print("-----------------------------------------------------\n");
 
 # v [Escreva uma função que embaralhe um array.]
-$valoresDesordenados = desordenar([1, 2, 3, 4, 5]);
+$valoresDesordenados = meuDesordenar([1, 2, 3, 4, 5]);
 print "(v) Valores desordenados: " . implode(",", $valoresDesordenados) . "\n";
 print("-----------------------------------------------------\n");
 
