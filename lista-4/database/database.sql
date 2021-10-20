@@ -1,21 +1,61 @@
+CREATE DATABASE empresa TEMPLATE template0;
+
+\c empresa;
+
+CREATE OR REPLACE FUNCTION trigger_set_timestamp()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.updated_at = NOW();
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
 CREATE TABLE produtos (
-  id serial PRIMARY KEY,
-  codigo VARCHAR (50) UNIQUE NOT NULL,
-  nome VARCHAR (255) UNIQUE NOT NULL,
-  descricao VARCHAR (510) NOT NULL,
-  ativo TINYINT NOT NULL DEFAULT 1,
-  preco_unitario  NOT NULL,
-  ultimo_custo_unitario NOT NULL,
-  unidade_medida_saida VARCHAR (5) NOT NULL,
-  unidade_medida_entrada VARCHAR (5) NOT NULL,
-  quantidade_entrada INT NOT NULL,
-  created_at TIMESTAMP NOT NULL,
-  updated_at TIMESTAMP NOT NULL,
+  id                      uuid                      DEFAULT uuid_generate_v4(),
+  codigo                  SERIAL,
+  nome                    VARCHAR(255)  NOT NULL,
+  descricao               VARCHAR(510)  NOT NULL,
+  quantidade              INT           NOT NULL    DEFAULT 0,
+  ativo                   BOOLEAN       NOT NULL    DEFAULT true,
+
+  unidade_medida_saida    VARCHAR(5)    NOT NULL,
+  unidade_medida_entrada  VARCHAR(5)    NOT NULL,
+  quantidade_entrada      INT           NOT NULL,
+
+  created_at              TIMESTAMP                 DEFAULT current_timestamp,
+  updated_at              TIMESTAMP                 DEFAULT current_timestamp,
+
+  PRIMARY KEY (id),
+
+  CONSTRAINT cons_produto CHECK (quantidade_entrada > 0 AND nome <> '' AND quantidade > 0)
 );
 
+CREATE TRIGGER set_timestamp
+BEFORE UPDATE ON produtos
+FOR EACH ROW
+EXECUTE PROCEDURE trigger_set_timestamp();
+
 CREATE TABLE movimentacoes (
-  id serial PRIMARY KEY,
-  operacao NOT NULL,
-  quantidade INT NOT NULL,
-  custo_unitario
+  id                      uuid        DEFAULT uuid_generate_v4(),
+  id_produto              uuid        NOT NULL,
+
+  operacao                VARCHAR(5)  NOT NULL,
+  quantidade_operacao     INT         NOT NULL,
+
+  unidade_medida_saida    VARCHAR (5) NOT NULL,
+  unidade_medida_entrada  VARCHAR (5) NOT NULL,
+  quantidade_entrada      INT         NOT NULL,
+
+  created_at              TIMESTAMP   DEFAULT current_timestamp,
+  updated_at              TIMESTAMP   DEFAULT current_timestamp,
+
+  PRIMARY KEY (id),
+  FOREIGN KEY (id_produto) REFERENCES produtos (id)
 );
+
+CREATE TRIGGER set_timestamp
+BEFORE UPDATE ON movimentacoes
+FOR EACH ROW
+EXECUTE PROCEDURE trigger_set_timestamp();
