@@ -17,19 +17,19 @@ CREATE TABLE produtos (
   codigo                  SERIAL,
   nome                    VARCHAR(255)  NOT NULL,
   descricao               VARCHAR(510)  NOT NULL,
-  quantidade              INT           NOT NULL    DEFAULT 0,
+  quantidade              BIGINT        NOT NULL    DEFAULT 0,
   ativo                   BOOLEAN       NOT NULL    DEFAULT true,
 
   unidade_medida_saida    VARCHAR(5)    NOT NULL,
   unidade_medida_entrada  VARCHAR(5)    NOT NULL,
-  quantidade_entrada      INT           NOT NULL,
+  quantidade_entrada      BIGINT        NOT NULL,
 
   created_at              TIMESTAMP                 DEFAULT current_timestamp,
   updated_at              TIMESTAMP                 DEFAULT current_timestamp,
 
   PRIMARY KEY (id),
 
-  CONSTRAINT cons_produto CHECK (quantidade_entrada > 0 AND nome <> '' AND quantidade > 0)
+  CONSTRAINT cons_produto CHECK (quantidade_entrada > 0 AND nome <> '')
 );
 
 CREATE TRIGGER set_timestamp
@@ -38,18 +38,19 @@ FOR EACH ROW
 EXECUTE PROCEDURE trigger_set_timestamp();
 
 CREATE TABLE movimentacoes (
-  id                      uuid        DEFAULT uuid_generate_v4(),
+  id                      uuid                  DEFAULT uuid_generate_v4(),
   id_produto              uuid        NOT NULL,
 
   operacao                VARCHAR(5)  NOT NULL,
-  quantidade_operacao     INT         NOT NULL,
+  quantidade_operacao     BIGINT      NOT NULL,
+  data_operacao           DATE        NOT NULL,
 
   unidade_medida_saida    VARCHAR (5) NOT NULL,
   unidade_medida_entrada  VARCHAR (5) NOT NULL,
-  quantidade_entrada      INT         NOT NULL,
+  quantidade_entrada      BIGINT      NOT NULL,
 
-  created_at              TIMESTAMP   DEFAULT current_timestamp,
-  updated_at              TIMESTAMP   DEFAULT current_timestamp,
+  created_at              TIMESTAMP             DEFAULT current_timestamp,
+  updated_at              TIMESTAMP             DEFAULT current_timestamp,
 
   PRIMARY KEY (id),
   FOREIGN KEY (id_produto) REFERENCES produtos (id)

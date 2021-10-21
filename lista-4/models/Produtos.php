@@ -38,10 +38,10 @@ class Produtos {
   {
     $this->nome                   = $p->nome;
     $this->descricao              = $p->descricao;
-    $this->quantidade             = $p->quantidade;
+    $this->quantidade             = !empty($p->quantidade) ? $p->quantidade : 0;
     $this->unidade_medida_saida   = $p->unidade_medida_saida;
     $this->unidade_medida_entrada = $p->unidade_medida_entrada;
     $this->quantidade_entrada     = $p->quantidade_entrada;
-    $this->ativo                  = empty($p->ativo) ? 1 : $p->ativo;
+    $this->ativo                  = !empty($p->ativo) ? $p->ativo : 1;
   }
 }

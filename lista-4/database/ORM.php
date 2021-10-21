@@ -1,11 +1,10 @@
 <?php
 require_once "config.php";
-
 require_once SITE_ROOT . "helper.php";
 
 trait ORM {
-  protected object|null $conn = null;
-  protected object|null $relationships = null;
+  protected object|null $conn           = null;
+  protected object|null $relationships  = null;
 
   /**
    * Cria a conexao com a base de dados
@@ -20,9 +19,9 @@ trait ORM {
     [
       "host"      => $host,
       "port"      => $port,
-      "db"        => $dbname,
-      "user"      => $username,
-      "pass"      => $password
+      "dbname"    => $db,
+      "username"  => $user,
+      "password"  => $pass
     ] = $this->getConfigsDB();
 
     $dsn = "pgsql:host=$host;port=$port;dbname=$db;user=$user;password=$pass";
@@ -43,7 +42,7 @@ trait ORM {
    */
   private function getConfigsDB() : array
   {
-    $handle = file_get_contents(SITE_ROOT . "/database/config_db.json");
+    $handle = file_get_contents(SITE_ROOT . "/database/config.json");
     $configs = json_decode($handle, true);
 
     return $configs;
@@ -67,6 +66,30 @@ trait ORM {
   }
 
   /**
+   * Retorna um vetor apenas com os atributos referente a coluna da tabela
+   *
+   * @return array
+   */
+  private function getCampos() : array
+  {
+    $campos = array();
+    foreach ($this as $chave => $item) {
+      if (
+        empty($item)
+        || $chave == 'conn'
+        || $chave == 'table'
+        || $chave == 'primary_key'
+        || $chave == 'foreign_key'
+        || $chave == 'relationships'
+      ) continue;
+
+      array_push($campos, $chave);
+    }
+
+    return $campos;
+  }
+
+  /**
    * Insere dados nas tabelas do banco
    *
    * @throws \Excepction
@@ -74,31 +97,20 @@ trait ORM {
    */
   public function insert() : string
   {
-    $campos = [];
-    foreach ($this as $chave => $item) {
-      if (
-        $chave == 'table'
-        || $chave == 'conn'
-        || $chave == 'primary_key'
-        || $chave == 'foreign_key'
-        || empty($item)
-      ) continue;
-
-      array_push($campos, $chave);
-    }
-
+    $campos = $this->getCampos();
     $colunas = implode(",", $campos);
     $valores = implode_wrapped(":", ",", $campos);
+
     $sql = "INSERT INTO $this->table ($colunas) VALUES ($valores) RETURNING id";
 
     try {
       $stmt = $this->conn->prepare($sql);
-      foreach ($campos as $c) $stmt->bindParam(":$c", $this->$c);
-      if ($stmt->execute()) {
-        // return $this->conn->lastInsertId(); // Only int id
-        return $stmt->fetchColumn();
+      foreach ($campos as $c) {
+        $stmt->bindParam(":$c", $this->$c);
       }
-      return null;
+      $stmt->execute();
+      // return $this->conn->lastInsertId(); // Only int id
+      return $stmt->fetchColumn();
     } catch (PDOException $e) {
       throw new Exception("Error ao executar comandos", 1);
     }
@@ -112,29 +124,31 @@ trait ORM {
    * @param int|null      $limit
    *
    * @throws \Exception
-   * @return array|null
+   * @return array|object|null
    */
   private function select(
-    array|string  $campos,
-    string|null   $where = null,
-    int|null      $limit = null,
-  ) : array|null
+    array|string|null $campos = null,
+    string|null       $where = null,
+    int|null          $limit = null,
+  ) : array|object|null
   {
-    $campos = !is_array($campos) ? $campos : implode(",", $campos);
-    $where = !is_null($where) ? "WHERE $where" : null;
-    $limit = !is_null($limit) ? "LIMIT $limit" : null;
+    $campos = is_array($campos)
+      ? implode(",", $campos)
+      : (is_null($campos) ? '*' : $campos);
 
     $sql = "SELECT $campos FROM $this->table";
     if (!is_null($this->relationships)) {
       $class = new $this->relationships->class();
       $sql .= " LEFT JOIN $class->table ON $this->table.$this->foreign_key = $class->table.$class->primary_key";
     }
-    $sql .= "$where $limit";
+    $sql .= !is_null($where) ? " WHERE $where" : "";
+    $sql .= !is_null($limit) ? " LIMIT $limit" : "";
 
     try {
       $stmt = $this->conn->prepare($sql);
       $stmt->execute();
-      $stmt->setFetchMode(PDO::FETCH_ASSOC);
+      // $stmt->setFetchMode(PDO::FETCH_ASSOC);
+      $stmt->setFetchMode(PDO::FETCH_OBJ);
 
       $dados = $limit == 1 ? $stmt->fetch() : $stmt->fetchAll();
       $dados = !empty($dados) ? $dados : null;
@@ -166,12 +180,15 @@ trait ORM {
   /**
    * Busca dados e retorna o primeiro resultado encontrado
    *
-   * @param array|string  $campos
-   * @param string|null   $where
+   * @param array|string|null   $campos
+   * @param string|null         $where
    *
-   * @return array|null
+   * @return object|null
    */
-  public function first(array|string $campos, string|null $where) : array|null
+  public function first(
+    array|string|null $campos = null,
+    string|null       $where = null
+  ) : object|null
   {
     return $this->select($campos, $where, 1);
   }
@@ -179,26 +196,34 @@ trait ORM {
   /**
    * Atualiza dados
    *
-   * @param int|array|null $id
+   * @param array|string    $dados
+   * @param string|array    $id
    *
    * @throws \Exception
    * @return void
    */
-  public function update(int|array|null $id = null) : void
+  public function update(
+    array|string|null $dados = null,
+    string|array $id = null
+  ) : void
   {
-    $campos = [];
-    foreach ($dados as $chave => $item) {
-      array_push($campos, $chave);
+    $dados = empty($dados) ? $this->getCampos() : $dados;
+
+    if (is_string($dados)) {
+      $campos = $dados;
+    } else {
+      $campos = "";
+      foreach ($dados as $chave => $item) {
+        $campos .= "$chave='$item',";
+      }
+      rtrim($campos, ',');
     }
-    $sql = "UPDATE $this->table SET ($colunas) WHERE $dados->id";
+
+    $sql = "UPDATE $this->table SET $campos WHERE id='$id'";
 
     try {
       $stmt = $this->conn->prepare($sql);
-      foreach ($campos as $campo) {
-        $stmt->bindParam(":$campo", $firstname);
-      }
-
-      $this->execute($sql);
+      $stmt->execute();
     } catch (PDOException $e) {
       throw new Exception("Error ao executar comandos", 1);
     }
@@ -207,19 +232,19 @@ trait ORM {
   /**
    * Deleta dados
    *
-   * @param int|array|null $primaryKey
+   * @param int|array|null $primary_key
    *
    * @throws \Exception
    * @return void
    */
-  public function delete(int|array|null $primaryKey = null) : void
+  public function delete(int|array|null $primary_key = null) : void
   {
     $sql = "DELETE FROM $this->table WHERE id";
 
-    if (is_array($primaryKey)) {
-      $sql .= " IN (" . implode(",", $primaryKey) . ")";
+    if (is_array($primary_key)) {
+      $sql .= " IN (" . implode(",", $primary_key) . ")";
     } else {
-      $sql .= " = $primaryKey";
+      $sql .= " = $primary_key";
     }
 
     try {
@@ -236,9 +261,9 @@ trait ORM {
    *
    * @return void
    */
-  protected function hasMany(string $class) : void {
+  protected function BelongsTo(string $class) : void {
     $this->relationships = (object) [
-      "type"  => "hasMany",
+      "type"  => "BelongsTo",
       "class" => $class,
     ];
   }
