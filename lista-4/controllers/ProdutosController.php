@@ -44,6 +44,8 @@ class ProdutosController {
     strtoupper($p->unidade_medida_entrada);
 
     $this->model->setProduto($p);
+
+
     return $id = $this->model->insert();
   }
 

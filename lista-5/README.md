@@ -20,8 +20,11 @@ Orientação importante: ao contrário das listas de exercicios, é recomendado 
 O prazo esperado para conclusão desta etapa final do treinamento é entre uma e duas semanas, mas desvios podem ocorrer. Em caso de dúvida, converse com o responsável pelo treinamento.
 
 ---------------------
-produto
+pessoa
+  clientepess
+  fornecedor
 
+produto
   - estoque a qual ele pertence
 
 estoque
@@ -32,4 +35,6 @@ movimentacao
  - venda (saida)
 
 venda
+  produtos
+  cliente
  -venda que gera movimentacao e dedus na quantidade do estoque
