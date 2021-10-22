@@ -183,7 +183,7 @@ function ralatorioMovimentacoes() {
       $salvar = readline("Deseja salvar o relatorio? (s/n): ");
       (strtolower($salvar) == 's') && salvarRelatorio("Movimentação de contas", $relatorio);
     }
-  } catch (Expection $e) {
+  } catch (Exception $e) {
     print $e->getMessage() . "\n";
   }
 }

@@ -51,8 +51,8 @@ class MovimentacoesController {
     $m->unidade_medida_saida    = strtoupper($m->unidade_medida_saida);
     $m->unidade_medida_entrada  = strtoupper($m->unidade_medida_entrada);
 
-    $m->quantidade_operaca = abs($m->quantidade_operacao);
-    if ($m->operacao == "S") $m->quantidade_operaca = -$m->quantidade_operaca;
+    $m->quantidade_operacao = abs($m->quantidade_operacao);
+    if ($m->operacao == "S") $m->quantidade_operacao = -$m->quantidade_operacao;
 
     $this->model->setMovimentacao($m);
 
@@ -99,6 +99,8 @@ class MovimentacoesController {
       $fimData    = stringToDate($invervaloDatas[1]);
 
       if (!$inicioData || !$fimData) throw new Exception("Data invalida", 1);
+
+      if ($inicioData > $fimData) throw new Exception("Data final inferior a de inicio do intervalo informado", 1);
 
       $where .= !empty($codigoProduto) && !empty($invervaloDatas) ? " AND ": "";
       $where .= !empty($invervaloDatas) ? "data_operacao BETWEEN '$inicioData' AND '$fimData'" : "";
