@@ -60,3 +60,16 @@ CREATE TRIGGER set_timestamp
 BEFORE UPDATE ON movimentacoes
 FOR EACH ROW
 EXECUTE PROCEDURE trigger_set_timestamp();
+
+
+CREATE OR REPLACE FUNCTION atualiza_estoque() RETURNS TRIGGER AS $trigger_bound$
+    BEGIN
+        UPDATE produtos SET quantidade = quantidade + NEW.quantidade_operacao
+        WHERE id = NEW.id_produto;
+        RETURN NULL;
+    END;
+$trigger_bound$ LANGUAGE plpgsql;
+
+CREATE TRIGGER atualiza_estoque_movimentacao
+AFTER UPDATE OR INSERT OR DELETE ON movimentacoes
+    FOR EACH ROW EXECUTE PROCEDURE atualiza_estoque();

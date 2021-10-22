@@ -76,11 +76,11 @@ trait ORM {
     foreach ($this as $chave => $item) {
       if (
         empty($item)
-        || $chave == 'conn'
-        || $chave == 'table'
-        || $chave == 'primary_key'
-        || $chave == 'foreign_key'
-        || $chave == 'relationships'
+        || $chave == "conn"
+        || $chave == "table"
+        || $chave == "primary_key"
+        || $chave == "foreign_key"
+        || $chave == "relationships"
       ) continue;
 
       array_push($campos, $chave);
@@ -130,11 +130,12 @@ trait ORM {
     array|string|null $campos = null,
     string|null       $where = null,
     int|null          $limit = null,
+    string|null       $order = null,
   ) : array|object|null
   {
     $campos = is_array($campos)
       ? implode(",", $campos)
-      : (is_null($campos) ? '*' : $campos);
+      : (is_null($campos) ? "*" : $campos);
 
     $sql = "SELECT $campos FROM $this->table";
     if (!is_null($this->relationships)) {
@@ -142,6 +143,7 @@ trait ORM {
       $sql .= " LEFT JOIN $class->table ON $this->table.$this->foreign_key = $class->table.$class->primary_key";
     }
     $sql .= !is_null($where) ? " WHERE $where" : "";
+    $sql .= !is_null($order) ? " ORDER BY $order" : "";
     $sql .= !is_null($limit) ? " LIMIT $limit" : "";
 
     try {
@@ -165,16 +167,18 @@ trait ORM {
    * @param array|string  $campos
    * @param string|null   $where
    * @param int|null      $limit
+   * @param string|null   $order
    *
    * @return array|null
    */
   public function find(
     array|string  $campos,
     string|null   $where = null,
-    int|null      $limit = null
+    int|null      $limit = null,
+    string|null   $order = null,
   ) : array|null
   {
-    return $this->select($campos, $where, $limit);
+    return $this->select($campos, $where, $limit, $order);
   }
 
   /**
@@ -182,15 +186,17 @@ trait ORM {
    *
    * @param array|string|null   $campos
    * @param string|null         $where
+   * @param string|null         $order
    *
    * @return object|null
    */
   public function first(
     array|string|null $campos = null,
-    string|null       $where = null
+    string|null       $where = null,
+    string|null       $order = null,
   ) : object|null
   {
-    return $this->select($campos, $where, 1);
+    return $this->select($campos, $where, 1, $order);
   }
 
   /**
@@ -216,7 +222,7 @@ trait ORM {
       foreach ($dados as $chave => $item) {
         $campos .= "$chave='$item',";
       }
-      rtrim($campos, ',');
+      rtrim($campos, ",");
     }
 
     $sql = "UPDATE $this->table SET $campos WHERE id='$id'";

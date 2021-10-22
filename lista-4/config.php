@@ -1,2 +1,9 @@
 <?php
-define('SITE_ROOT', __DIR__ . "\\");
+CONST SITE_ROOT = __DIR__ . "\\";
+
+const CADASTRAR_PRODUTO = 1;
+const VISUALIZAR_PRODUTOS = 2;
+const REGISTRAR_MOVIMENTACAO = 3;
+const POSICAO_ESTOQUE = 4;
+const MOVIMENTACOES = 5;
+const SAIR = 6;

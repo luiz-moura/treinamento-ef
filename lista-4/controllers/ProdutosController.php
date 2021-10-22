@@ -1,5 +1,6 @@
 <?php
 require_once "config.php";
+require_once SITE_ROOT . "helper.php";
 
 require_once SITE_ROOT . "models\Produtos.php";
 
@@ -61,10 +62,9 @@ class ProdutosController {
     int|null      $limit = null
   ) : array|object|null
   {
-    if ($limit == 1) {
-      return $this->model->first($campos, $where);
-    }
-    return $this->model->find($campos, $where, $limit);
+    return $limit == 1
+      ? $this->model->first($campos, $where)
+      : $this->model->find($campos, $where, $limit);
   }
 
   /**
@@ -93,28 +93,22 @@ class ProdutosController {
   public function produtosToString(int|null $codigoProduto = null) : string|null
   {
     $where = !empty($codigoProduto) ? "codigo='$codigoProduto'" : null;
-    $produtos = $this->model->find('*', $where);
+    $produtos = $this->model->find("*", $where, null, "codigo ASC");
 
     if (empty($produtos)) return null;
-
-    $filtro = empty($codigoProduto) ? "TODOS PRODUTOS" : "CODIGO $codigoProduto";
-
-    $relatorio = "";
-    $relatorio .= "+--------------------------------------------------------------------------+\n";
-    $relatorio .= "|                           RELATORIO DE PRODUTOS                          |\n";
-    $relatorio .= "+--------------------------------------------------------------------------+\n";
-    // $relatorio .= mb_str_pad("| FITLRAR: $filtro", 75) ."|\n";
-    // $relatorio .= "+------+--------------------------+-------------------------+--------------+\n";
-    $relatorio .= "| COD. | PRODUTO                  | DESCRICAO               |    ATIVO     |\n";
-    $relatorio .= "+------+--------------------------+-------------------------+--------------+\n";
+    $relatorio =  "+-------------------------------------------------------------------------------------------+\n";
+    $relatorio .= "|                                   RELATORIO DE PRODUTOS                  " . dataHoraAtual() . " |\n";
+    $relatorio .= "+-------------------------------------------------------------------------------------------+\n";
+    $relatorio .= "| COD. | PRODUTO                          | DESCRICAO                        |    ATIVO     |\n";
+    $relatorio .= "+------+----------------------------------+----------------------------------+--------------+\n";
     foreach ($produtos as $produto) {
       $ativo = $produto->ativo ? "ATIVO" : "INATIVO";
       $relatorio .= mb_str_pad("| $produto->codigo", 7);
-      $relatorio .= mb_str_pad("| $produto->nome", 27);
-      $relatorio .= mb_str_pad("| $produto->descricao", 26);
+      $relatorio .= mb_str_pad("| $produto->nome", 35);
+      $relatorio .= mb_str_pad("| $produto->descricao", 35);
       $relatorio .= mb_str_pad("| $ativo", 15) . "|\n";
     }
-    $relatorio .= "+------+--------------------------+-------------------------+--------------+\n";
+    $relatorio .= "+------+----------------------------------+----------------------------------+--------------+\n";
 
     return $relatorio;
   }
@@ -129,26 +123,24 @@ class ProdutosController {
   public function posicaoEstoqueToString(int|null $codigoProduto = null) : string|null
   {
     $where = !empty($codigoProduto) ? "codigo='$codigoProduto'" : null;
-    $produtos = $this->model->find('*', $where);
+    $produtos = $this->model->find("*", $where, null, "codigo ASC");
 
     if (empty($produtos)) return null;
 
     $filtro = empty($codigoProduto) ? "TODOS PRODUTOS" : "CODIGO $codigoProduto";
-
-    $relatorio = "";
-    $relatorio .= "+--------------------------------------------------------------------------+\n";
-    $relatorio .= "|                      RELATORIO DE POSICAO DE ESTOQUE                     |\n";
-    $relatorio .= "+--------------------------------------------------------------------------+\n";
-    $relatorio .= mb_str_pad("| FITLRAR: $filtro", 75) ."|\n";
-    $relatorio .= "+------+----------------------------------------------------+--------------+\n";
-    $relatorio .= "| COD. | PRODUTO                                            |  QUANTIDADE  |\n";
-    $relatorio .= "+------+----------------------------------------------------+--------------+\n";
+    $relatorio =  "+-------------------------------------------------------------------------------------------+\n";
+    $relatorio .= "|                              RELATORIO DE POSICAO DE ESTOQUE             " . dataHoraAtual() . " |\n";
+    $relatorio .= "+-------------------------------------------------------------------------------------------+\n";
+    $relatorio .= mb_str_pad("| FITLRAR: $filtro", 92) ."|\n";
+    $relatorio .= "+------+---------------------------------------------------------------------+--------------+\n";
+    $relatorio .= "| COD. | PRODUTO                                                             |  QUANTIDADE  |\n";
+    $relatorio .= "+------+---------------------------------------------------------------------+--------------+\n";
     foreach ($produtos as $produto) {
       $relatorio .= mb_str_pad("| $produto->codigo", 7);
-      $relatorio .= mb_str_pad("| $produto->nome", 53);
+      $relatorio .= mb_str_pad("| $produto->nome", 70);
       $relatorio .= mb_str_pad("| $produto->quantidade", 15) . "|\n";
     }
-    $relatorio .= "+------+----------------------------------------------------+--------------+\n";
+    $relatorio .= "+------+---------------------------------------------------------------------+--------------+\n";
 
     return $relatorio;
   }

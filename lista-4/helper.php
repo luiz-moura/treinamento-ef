@@ -1,11 +1,4 @@
 <?php
-const CADASTRAR_PRODUTO = 1;
-const VISUALIZAR_PRODUTOS = 2;
-const REGISTRAR_MOVIMENTACAO = 3;
-const POSICAO_ESTOQUE = 4;
-const MOVIMENTACOES = 5;
-const SAIR = 6;
-
 function clearCLI() {
   popen('cls || clear','w');
 }
@@ -18,6 +11,11 @@ function stringToDate($dateStr) {
 
   $date = str_replace('/', '-', $dateStr);
   return date('Y-m-d', strtotime($date));
+}
+
+function dataHoraAtual() {
+  $timezone = new DateTimeZone('America/Porto_velho');
+  return (new DateTime('now', $timezone))->format('d/m/Y H:i');
 }
 
 function isInteger($input) {
@@ -42,3 +40,13 @@ function mb_str_pad($str, $pad_len, $pad_str = ' ', $dir = STR_PAD_RIGHT, $encod
   $after = $padAfter ? mb_substr($repeatedString, 0, ceil($targetLen), $encoding) : '';
   return $before . $str . $after;
 }
+
+$papelaria = '
+`7MMF    `7MF `7MN.   `7MF `7MMF `7MMF    `7MF `7MM"""YMM  `7MM"""Mq.   .M"""bgd   .g8""8q.
+  MM       M    MMN.    M    MM    `MA     ,V    MM    `7    MM   `MM. ,MI    "Y .dP     `YM.
+  MM       M    M YMb   M    MM     VM:   ,V     MM   d      MM   ,M9  `MMb.     dM       `MM
+  MM       M    M  `MN. M    MM      MM.  M      MMmmMM      MMmmdM9     `YMMNq. MM        MM
+  MM       M    M   `MM.M    MM      `MM A       MM   Y  ,   MM  YM.   .     `MM MM.      ,MP
+  YM.     ,M    M     YMM    MM       :MM;       MM     ,M   MM   `Mb. Mb     dM `Mb.    ,dP
+   `bmmmmd"´  .JML.    YM  .JMML.      VF      .JMMmmmmMMM .JMML. .JMM.P"Ybmmd"    `"bmmd"´
+';

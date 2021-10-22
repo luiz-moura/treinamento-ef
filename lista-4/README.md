@@ -8,7 +8,7 @@
 
 [x] A qualquer momento, ele precisa conseguir gerar um relatório da situação atual do estoque além de consultar a situação de algum item específico.
 
-[ ] Esse relatório precisa ser salvo num arquivo ou impresso em tela, a escolha do usuário.
+[x] Esse relatório precisa ser salvo num arquivo ou impresso em tela, a escolha do usuário.
 
 [x] Guarde um registro de cada movimentação do estoque.
 

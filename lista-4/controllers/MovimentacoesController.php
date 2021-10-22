@@ -1,5 +1,6 @@
 <?php
 require_once "config.php";
+require_once SITE_ROOT . "helper.php";
 
 require_once SITE_ROOT . "models\Movimentacoes.php";
 
@@ -46,13 +47,12 @@ class MovimentacoesController {
       throw new Exception("Data no formato incorreto. Formato correto Ex.: 13/02/199", 1);
     }
 
-    strtoupper($m->operacao);
-    strtoupper($m->unidade_medida_saida);
-    strtoupper($m->unidade_medida_entrada);
+    $m->operacao                = strtoupper($m->operacao);
+    $m->unidade_medida_saida    = strtoupper($m->unidade_medida_saida);
+    $m->unidade_medida_entrada  = strtoupper($m->unidade_medida_entrada);
 
-    $m->quantidade_operacao = $m->operacao == "E"
-      ? abs($m->quantidade_operacao)
-      : -abs($m->quantidade_operacao);
+    $m->quantidade_operaca = abs($m->quantidade_operacao);
+    if ($m->operacao == "S") $m->quantidade_operaca = -$m->quantidade_operaca;
 
     $this->model->setMovimentacao($m);
 
@@ -74,10 +74,9 @@ class MovimentacoesController {
     int|null      $limit = null
   ) : array|object|null
   {
-    if ($limit == 1) {
-      return $this->model->first($campos, $where);
-    }
-    return $this->model->find($campos, $where, $limit);
+    return $limit == 1
+      ? $this->model->first($campos, $where)
+      : $this->model->find($campos, $where, $limit);
   }
 
   /**
@@ -90,7 +89,7 @@ class MovimentacoesController {
    * @return string|null
    */
   function movimentacoesToString(
-    int|null $codigoProduto = null,
+    int|null    $codigoProduto = null,
     array|null  $invervaloDatas = null
   ) : string|null
   {
@@ -105,30 +104,29 @@ class MovimentacoesController {
       $where .= !empty($invervaloDatas) ? "data_operacao BETWEEN '$inicioData' AND '$fimData'" : "";
     }
 
-    if (empty($where)) $where = null;
-    $movimentacoes = $this->model->find("movimentacoes.*, produtos.codigo, produtos.nome", $where);
+    $where = (!empty($where)) ? $where : null;
+    $movimentacoes = $this->model->find("movimentacoes.*, produtos.codigo, produtos.nome", $where, null, "data_operacao ASC");
 
     if (empty($movimentacoes)) return null;
 
     $filtro = empty($codigoProduto) ? "TODOS PRODUTOS" : "CODIGO $codigoProduto";
     $filtro .= !empty($invervaloDatas) ? ", ENTRE $invervaloDatas[0] - $invervaloDatas[1]" : "";
-
-    $relatorio = "";
-    $relatorio .= "+--------------------------------------------------------------------------+\n";
-    $relatorio .= "|                   RELATORIO DE MOVIMENTACAO DE PRODUTOS                  |\n";
-    $relatorio .= "+--------------------------------------------------------------------------+\n";
-    $relatorio .= mb_str_pad("| FITLRAR: $filtro", 75) ."|\n";
-    $relatorio .= "+------+-----------------------------------+-----+------------+------------+\n";
-    $relatorio .= "| COD. | PRODUTO                           | OP. | QUANTIDADE |   DATA     |\n";
-    $relatorio .= "+------+-----------------------------------+-----+------------+------------+\n";
+    $relatorio =  "+-------------------------------------------------------------------------------------------+\n";
+    $relatorio .= "|                           RELATORIO DE MOVIMENTACAO DE PRODUTOS          " . dataHoraAtual() . " |\n";
+    $relatorio .= "+-------------------------------------------------------------------------------------------+\n";
+    $relatorio .= mb_str_pad("| FITLRAR: $filtro", 92) ."|\n";
+    $relatorio .= "+------+----------------------------------------------------+-----+------------+------------+\n";
+    $relatorio .= "| COD. | PRODUTO                                            | OP. | QUANTIDADE |   DATA     |\n";
+    $relatorio .= "+------+----------------------------------------------------+-----+------------+------------+\n";
     foreach ($movimentacoes as $movimentacao) {
+      $data = (new DateTime($movimentacao->data_operacao))->format('d/m/Y');
       $relatorio .= mb_str_pad("| $movimentacao->codigo", 7);
-      $relatorio .= mb_str_pad("| $movimentacao->nome", 36);
+      $relatorio .= mb_str_pad("| $movimentacao->nome", 53);
       $relatorio .= mb_str_pad("| $movimentacao->operacao", 6);
       $relatorio .= mb_str_pad("| $movimentacao->quantidade_operacao", 13);
-      $relatorio .= mb_str_pad("| $movimentacao->data_operacao", 13) . "|\n";
+      $relatorio .= mb_str_pad("| $data", 13) . "|\n";
     }
-    $relatorio .= "+------+---------------------------------------+------------+--------------+\n";
+    $relatorio .= "+------+----------------------------------------------------+-----+------------+------------+\n";
 
     return $relatorio;
   }

@@ -22,7 +22,7 @@ function app() {
       cadastrarProduto();
       break;
     case VISUALIZAR_PRODUTOS:
-      print $produtoController->produtosToString();
+      visualizarProdutos();
       break;
     case REGISTRAR_MOVIMENTACAO:
       registrarMovimentacao();
@@ -43,20 +43,23 @@ function app() {
 }
 
 function opcoes() {
+  global $papelaria;
+
   clearCLI();
-  print "+--------------------------------------------------------------------------+\n";
-  print "|                                  OPCOES                                  |\n";
-  print "+-----+--------------------------------------------------------------------+\n";
-  print mb_str_pad("| [1] | Cadastrar produto", 75) . "|\n";
-  print mb_str_pad("| [2] | Visualizar produtos", 75) . "|\n";
-  print "+-----+--------------------------------------------------------------------+\n";
-  print mb_str_pad("| [3] | Registrar movimentacao de produto", 75) . "|\n";
-  print "+-----+--------------------------------------------------------------------+\n";
-  print mb_str_pad("| [4] | Gerar relatório de posicao de estoque", 75) . "|\n";
-  print mb_str_pad("| [5] | Gerar relatório de movimentacao de estoque", 75) . "|\n";
-  print "+-----+--------------------------------------------------------------------+\n";
-  print mb_str_pad("| [6] | SAIR", 75) . "|\n";
-  print "+-----+--------------------------------------------------------------------+\n";
+  print $papelaria;
+  print "+-------------------------------------------------------------------------------------------+\n";
+  print "|                                          OPCOES                                           |\n";
+  print "+-----+-------------------------------------------------------------------------------------+\n";
+  print mb_str_pad("| [1] | Cadastrar produto", 92) . "|\n";
+  print mb_str_pad("| [2] | Visualizar produtos", 92) . "|\n";
+  print "+-----+-------------------------------------------------------------------------------------+\n";
+  print mb_str_pad("| [3] | Registrar movimentacao de produto", 92) . "|\n";
+  print "+-----+-------------------------------------------------------------------------------------+\n";
+  print mb_str_pad("| [4] | Gerar relatório de posicao de estoque", 92) . "|\n";
+  print mb_str_pad("| [5] | Gerar relatório de movimentacao de estoque", 92) . "|\n";
+  print "+-----+-------------------------------------------------------------------------------------+\n";
+  print mb_str_pad("| [6] | SAIR", 92) . "|\n";
+  print "+-----+-------------------------------------------------------------------------------------+\n";
 
   return readline("Digite uma opcao: ");
 }
@@ -86,7 +89,20 @@ function cadastrarProduto() {
   }
 }
 
-function registrarMovimentacao(object|null $produto = null, string|null $operacao = null) {
+function visualizarProdutos() {
+  global $produtoController;
+
+  $relatorio = $produtoController->produtosToString();
+
+  print $relatorio ?: "Nenhum dado encontrado\n";
+
+  if ($relatorio) {
+    $salvar = readline("Deseja salvar o relatorio? (s/n): ");
+    (strtolower($salvar) == 's') && salvarRelatorio("Produtos", $relatorio);
+  }
+}
+
+function registrarMovimentacao($produto = null, $operacao = null) {
   global $movimentacoesController;
   global $produtoController;
 
@@ -135,7 +151,10 @@ function ralatorioPosicaoEstoque() {
 
   print $relatorio ?: "Nenhum dado encontrado\n";
 
-  $salvar = readline("Deseja salvar o relatorio? (s/n): ");
+  if ($relatorio) {
+    $salvar = readline("Deseja salvar o relatorio? (s/n): ");
+    (strtolower($salvar) == 's') && salvarRelatorio("Posição de Estoque", $relatorio);
+  }
 }
 
 function ralatorioMovimentacoes() {
@@ -160,8 +179,28 @@ function ralatorioMovimentacoes() {
     $relatorio = $movimentacoesController->movimentacoesToString($codigo, $intervalo);
     print $relatorio ?: "Nenhum dado encontrado\n";
 
-    $salvar = readline("Deseja salvar o relatorio? (s/n): ");
+    if ($relatorio) {
+      $salvar = readline("Deseja salvar o relatorio? (s/n): ");
+      (strtolower($salvar) == 's') && salvarRelatorio("Movimentação de contas", $relatorio);
+    }
   } catch (Expection $e) {
     print $e->getMessage() . "\n";
   }
+}
+
+function salvarRelatorio($nome, $relatorio) {
+  $diretorio = readline("Coloque o caminho da pasta: ");
+  $diretorio = !empty($diretorio) && is_dir($diretorio) ? $diretorio : SITE_ROOT . "reports";
+  $nome = "Relatorio de $nome " . time();
+  salvarArquivo($nome, $relatorio, $diretorio);
+  print("Relatório salvo com sucesso!\n");
+}
+
+function salvarArquivo($nome, $dados, $diretorio) {
+  $caminho = "$diretorio\\$nome.txt";
+  $dados .= "\nPapelariaUniverseSYSTEM 1.0.1";
+
+  $handle = fopen($caminho, 'w');
+  fwrite($handle, $dados);
+  fclose($handle);
 }
