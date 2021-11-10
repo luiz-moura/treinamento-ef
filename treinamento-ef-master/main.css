@@ -1,0 +1,144 @@
+:root {
+    box-sizing: border-box;
+}
+
+body {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 1em;
+
+    background-color: #eee;
+
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+header {
+    text-transform: uppercase;
+    font-size: .8rem;
+}
+
+code, .code {
+    color: #e55;
+}
+
+code {
+    background-color: rgb(255, 255, 255, .8);
+}
+
+pre {
+    background-color: #fff;
+    padding: 1em;
+    margin-bottom: 2em;
+    border: 1px solid #777;
+    box-shadow: .5em .5em .5em #777;
+}
+
+.exercicios {
+    list-style-type: lower-roman;
+    background-color: #fff;
+    padding-top: 1em;
+    padding-right: 1em;
+    border: 2px dashed black;
+}
+
+.exercicios > li {
+    margin-bottom: 1em;
+}
+
+table, th, td {
+    background-color: white;
+    border: 1px solid black;
+}
+
+th, td {
+    padding: 1em;
+}
+
+.alien > img {
+    height: 300px;
+}
+
+.alien {
+    float: right;
+}
+
+figure {
+    border: 1px solid black;
+    padding: 1em;
+}
+
+figcaption {
+    text-align: center;
+    background-color: white;
+    padding: .3em;
+    margin-top: .5em;
+    border: 1px dashed black;
+}
+
+.cyber > img {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+}
+
+.cyber {
+    border: none;
+}
+
+.graduation > img {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+}
+
+.graduation {
+    border: none;
+}
+
+.forca {
+    float: right;
+    max-width: 200px;
+}
+
+.forca > img {
+    width: 100%;
+}
+
+.clearfix {
+    clear: both;
+}
+
+.cat {
+    float: left;
+    max-width: 200px;
+    background-color: white;
+}
+
+.cat > img {
+    width: 100%;
+}
+
+.confusao {
+    max-width: 300px;
+    float: right;
+    background-color: white;
+}
+
+.confusao > img {
+    width: 100%;
+}
+
+.stats {
+    max-width: 200px;
+    float: left;
+    margin-left: 0;
+    margin-right: 8em;
+}
+
+.stats > img {
+    width: 140%;
+}
+
+.intro-4 {
+    margin-top: 8em;
+}

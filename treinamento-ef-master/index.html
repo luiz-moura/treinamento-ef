@@ -1,0 +1,783 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8"/>
+    <title>Treinamento - Eficiência Fiscal</title>
+    <link href="main.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body>
+    <header>
+      <h1>Treinamento - Eficiência Fiscal</h1>
+    </header>
+
+    <main>
+      <h2>Instruções</h2>
+
+      <figure class="alien">
+        <img src="alien.png"></img>
+        <figcaption>Bem-vindo!</figcaption>
+      </figure>
+      
+      <p>
+        Nesta página você irá encontrar o treinamento básico para
+        desenvolvedores da Eficiência Fiscal. Ele é composto de uma
+        série de listas de exercícios que devem ser resolvidas em
+        ordem, utilizando a linguagem de programação PHP em sua
+        versão mais recente.
+      </p>
+
+      <p>
+        O uso da linguagem PHP é <strong>obrigatório</strong> e se justifica
+        pelos seguintes pontos:
+
+        <ol>
+          <li>
+            É a nossa principal linguagem de desenvolvimento.
+          </li>
+          <li>
+            É uma linguagem imperativa, bastante completa e de
+            fácil aprendizado.
+          </li>
+          <li>
+            É a linguagem da framework Laravel.
+          </li>
+        </ol>
+      </p>
+
+      <p>
+        Apesar disso, o objetivo principal do treinamento <em>não</em> é
+        ensinar PHP, de modo que deve ser seguido mesmo por quem já
+        tenha conhecimento da linguagem.
+      </p>
+
+      <p>
+        Tente fazer os exercícios por conta própria o máximo que
+        conseguir, mas não é proibido buscar ajuda dos colegas de
+        trabalho, sobretudo se você ficar muito tempo travado em
+        algum exercício em particular.  Além disso, é recomendado
+        mostrar o seu trabalho para os colegas, a fim de buscar
+        opiniões e conselhos, e obrigatório submeter cada lista
+        completa ao responsável pelo treinamento, para revisão.
+      </p>
+
+      <p>
+        Não comece uma nova lista antes de ter a revisão aprovada
+        pelo responsável pelo treinamento -- tirando quando parecer
+        razoável, por exemplo, caso tenha faltado apenas alguns
+        ajustes pequenos. Definitivamente não antes do responsável
+        ter sequer olhado a lista anterior. Se a revisão demorar,
+        utilize o tempo para estudar.
+      </p>
+
+      <h2>Materiais complementares</h2>
+
+      <p>
+        Sinta-se livre para usar qualquer material que desejar para
+        aprender PHP. O conteúdo recomendado para o treinamento pode
+        ser encontrado na seção <a href="https://www.php.net/manual/pt_BR/langref.php">Referência da Linguagem</a> do manual do PHP, em especial os
+        seguintes itens:
+
+        <ol>
+          <li>Tipos</li>
+          <li>Variáveis</li>
+          <li>Constantes</li>
+          <li>Expressões</li>
+          <li>Operadores</li>
+          <li>Estruturas de Controle</li>
+          <li>Funções</li>
+          <li>Classes e Objetos</li>
+          <li>Namespaces</li>
+        </ol>
+      </p>
+
+      <p>
+        Não se sinta obrigado a aprender toda a linguagem antes de iniciar
+        o treinamento. O recomendado é começar tão logo você consiga, e
+        ir utilizando os exercícios para consolidar o aprendizado.
+      </p>
+
+      <h2>Referência básica da linguagem</h2>
+
+      <figure class="cyber">
+        <img src="cyber.jpg"></img>
+        <figcaption>Uau... PHP!</figcaption>
+      </figure>
+
+      <h3>Introdução</h3>
+
+      <p>
+        O que segue é uma referência básica da linguagem, a título
+        de material de apoio -- em especial no início do treinamento.
+        A intenção não é ser a sua única referência de aprendizado.
+      </p>
+
+      <p>
+        Fique a vontade para apresentar sugestões de adições a esta
+        seção.
+      </p>
+
+      <h3>Variáveis e execução</h3>
+
+      <p>
+        Todo arquivo PHP deve começar com <code>&lt;?php</code>.
+
+        Você declara variáveis utilizando o símbolo cifrão <code>$</code>,
+        e as expressões terminam com ponto e vírgula <code>;</code>:
+      </P>
+
+      <p>
+        <pre class="code">
+  &lt;?php
+
+  $numero = 1;
+  $proximo = $numero + 1;
+
+        </pre>
+      </p>
+
+      <p>
+        Para executar um programa, utilize o comando <code>php</code>:
+        <br>
+        <code>php meuprograma.php</code>
+      </p>
+
+      <h3>Condicionais</h3>
+
+      <p>
+        Um condicional utiliza as palavras <code>if</code>,
+        <code>else if</code> e <code>else</code>:
+      </p>
+
+      <p>
+        <pre class="code">
+  &lt;?php
+
+  $numero = $10;
+
+  if ($numero > 10) {
+      echo "O número é maior do que 10";
+  } else if ($numero < 10) {
+      echo "O número é menor do que 10";
+  } else {
+      echo "O número é 10";
+  }
+        </pre>
+      </p>
+
+      <p>
+        O exemplo acima também mostra como imprimir um texto na tela
+        através da palavra <code>echo</code>.
+
+        A tabela a seguir resume os operadores condicionais:
+      </p>
+
+      <table>
+        <thead>
+          <th>Símbolo</th>
+          <th>Exemplo</th>
+          <th>Significado</th>
+        </thead>
+        <tbody>
+          <tr>
+            <td>></td>
+            <td class="code">$a > $b</td>
+            <td>$a é maior do que $b</td>
+          </tr>
+          <tr>
+            <td>&lt;</td>
+            <td class="code">$a &lt; $b</td>
+            <td>$a é menor do que $b</td>
+          </tr>
+          <tr>
+            <td>>=</td>
+            <td class="code">$a >= $b</td>
+            <td>$a é maior ou igual a $b</td>
+          </tr>
+          <tr>
+            <td>&lt;=</td>
+            <td class="code">$a &lt;= $b</td>
+            <td>$a é menor ou igual a $b</td>
+          </tr>
+          <tr>
+            <td>==</td>
+            <td class="code">$a == $b</td>
+            <td>$a é igual a $b</td>
+          </tr>
+          <tr>
+            <td>!=</td>
+            <td class="code">$a != $b</td>
+            <td>$a é diferente de $b</td>
+          </tr>
+          <tr>
+            <td>!</td>
+            <td class="code">!$a</td>
+            <td>$a é falso</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+        A tabela a seguir resume algumas funções úteis e muito comuns em
+        condicionais:
+      </p>
+
+      <table>
+        <thead>
+          <th>Função</th>
+          <th>Exemplo</th>
+          <th>Significado</th>
+        </thead>
+        <tbody>
+          <tr>
+            <td>empty</td>
+            <td class="code">empty($a)</td>
+            <td>$a está vazio</td>
+          </tr>
+          <tr>
+            <td>is_null</td>
+            <td class="code">is_null($a)</td>
+            <td>$a é null</td>
+          </tr>
+          <tr>
+            <td>instanceof</td>
+            <td class="code">$a instanceof Carro</td>
+            <td>$a é um objeto da classe Carro</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Arrays e iteração</h3>
+
+      <p>
+        Um array (lista) é declarado usando colchetes <code>[]</code>:
+      </p>
+
+      <p>
+        <pre class="code">
+  &lt;?php
+
+  $a = [1, 2, 3];
+
+  if (empty($a)) {
+      echo "O array está vazio!";
+  } else {
+      echo "O primeiro item é " . $a[0];
+  }
+
+  $a[] = 4;
+  $a[] = 5;
+        </pre>
+      </p>
+
+      <p>
+        O exemplo anterior também mostra como adicionar uma variável a uma
+        string (concatenação) através do operador ponto, e como
+        adicionar valores ao fim do array.
+
+        Você pode iterar através dos itens de uma lista de diversas
+        maneiras:
+      </p>
+
+      <p>
+        <pre class="code">
+  &lt;?php
+
+  $a = [1, 2, 3];
+
+  foreach ($a as $numero) {
+      echo "$numero";
+  }
+
+  for ($i = 0; $i < count($a); $a++) {
+      echo($a[$i]);
+  }
+
+  $i = 0;
+  while ($i < count($a)) {
+      echo($a[$i]);
+      $i++;
+  }
+        </pre>
+      </p>
+
+      <h3>Controle de iteração</h3>
+
+      <p>
+        Você pode sair de um loop utilizando a palavra <code>break</code>, e pular
+        para a próxima iteração utilizando a palavra <code>continue</code>.
+
+      </p>
+
+      <h3>Arrays associativos</h3>
+
+      <p>
+        Um array pode ser associativo, isto é, indexado por palavras, e não
+        somente números:
+      </p>
+
+      <p>
+        <pre class="code">
+  &lt;?php
+
+  $a = [
+      'nome' => 'João',
+      'idade' => 15
+  ];
+
+  echo "O seu nome é : " . $a['nome'];
+
+  $a['naturalidade'] = 'Brasileiro';
+        </pre>
+      </p>
+
+      <h3>Leitura de input do usuário</h3>
+
+      <p>
+        No PHP, você pode ler /input/ do usuário através da
+        função <code>read_line</code>:
+      </p>
+
+      <p>
+        <pre class="code">
+  &lt;?php
+
+  $numero = readline("Digite um número: ");
+  echo "Você escolheu: " . $numero;
+
+        </pre>
+      </p>
+
+      <h3>Conversão entre tipos</h3>
+
+      <p>
+        Você pode converter uma string em um inteiro através da sintaxe
+        <code>(int)</code>:
+      </p>
+
+      <p>
+        <pre class="code">
+  &lt;?php
+
+  $numero = (int) readline("Digite um número: ");
+
+  if ($numero > 10) {
+      echo "Você escolheu um número grande!";
+  }
+        </pre>
+      </p>
+
+      <h3>Números aleatórios</h3>
+
+      <p>
+        Você pode gerar um número aleatório através da função
+        <code>random_int</code>:
+      </p>
+
+      <p>
+        <pre class="code">
+  &lt;?php
+
+  echo(random_int(0, 10));
+        </pre>
+      </p>
+
+      <h3>Funções</h3>
+
+      <p>
+        Você declara funções da seguinte maneira:
+        <br>
+        <code>
+function &lt;nome>(&lt;parametro1>, &lt;parametro2>...) { corpo }
+        </code>
+      </p>
+      
+      <p>
+        <pre class="code">
+  function adicionarAspas($str, $simples=false) {
+      if ($simples) {
+	  return "'{$str}'";
+      } else {
+	  return "\"{$str}\"";
+      }
+  }
+        </pre>
+      </p>
+
+      <p>
+        O exemplo acima também mostra como adicionar um valor padrão para
+        um parâmetro.
+      </p>
+
+      <h3>Interação com o sistema operacional</h3>
+
+      <p>
+        Você pode interagir com o sistema operacional através da função
+        <code>system</code>. É muito útil, por exemplo, utilizar
+        <code>system('clear')</code> para limpar o texto do terminal no Linux.
+      </p>
+
+      <h2>Lista 1: Jogo da adivinhação</h2>
+
+      <figure class="cat">
+        <img src="cat.jpg"></img>
+        <figcaption>Deixa eu adivinhar...</figcaption>
+      </figure>
+
+      <p>
+        A recomendação é fazer os exercícios desta lista na sequência, mesmo
+        que pareça mais fácil fazer em ordem diversa.
+      </p>
+      
+      <ol class="exercicios">
+        <li>
+          Escreva um jogo de adivinhação: o usuário precisa adivinhar um
+          número entre 0 e 100, e o programa deve dizer, a cada tentativa,
+          se o usuário chutou muito alto, muito baixo, ou se acertou.
+        </li>
+        <li>
+          Incremente o programa anterior para exibir uma pontuação ao
+          final da partida. Quanto menos chutes o usuário precisar para
+          acertar, maior deve ser a sua pontuação.
+        </li>
+        <li>
+          Ofereça, ao fim do jogo, a possibilidade do usuário jogar
+          novamente.
+        </li>
+        <li>
+          Exiba uma mensagem de congratulação quando o usuário atingir a
+          pontuação mais alta até então.
+        </li>
+        <li>
+          Quando o usuário não atingir a pontuação mais alta, exiba uma
+          mensagem de "Game Over" com a pontuação dele e a pontuação mais
+          alta.
+        </li>
+        <li>
+          Ofereça duas opções ao usuário: iniciar o jogo ou visualizar o
+          ranking de pontuação.
+        </li>
+        <li>
+          Pergunte o nome do jogador no início da partida e associe o nome
+          dele à pontuação (no ranking, por exemplo).
+        </li>
+        <li>
+          Desafio: salve o ranking entre as partidas, mesmo que o programa
+          seja fechado e aberto de novo.
+        </li>
+        <li>
+          Desafio: faça o tempo ser um dos fatores da pontuação -- quanto
+          mais rápido o usuário acertar, maior será a sua pontuação.
+        </li>
+        <li>
+          Considere a pontuação por jogador, exibindo mensagens como
+          "você atingiu a sua maior pontuação" e "você atingiu a maior
+          pontuação da máquina".
+        </li>
+      </ol>
+
+      <h2>Lista 2: Jogo da forca</h2>
+
+      <figure class="forca">
+        <img src="forca.png"></img>
+        <figcaption>Calma lá, estamos apenas começando!</figcaption>
+      </figure>
+
+      <ol class="exercicios">
+        <li>
+          Escreva um jogo da forca: o sistema escolhe uma palavra
+          aleatória e exibe a quantidade de letras dela. O usuário tem uma
+          quantidade limitada de vidas (tentativas erradas) para adivinhar
+          a palavra inteira. 
+        </li>
+        <li>
+          Faça uma representação visual da situação da palavra. Por
+          exemplo: tracinhos para representar as letras ainda não
+          adivinhadas, e as letras em si nos lugares corretos.
+        </li>
+        <li>
+          Exiba uma lista das letras que o usuário já utilizou, assim como
+          a quantidade de vidas restantes.
+        </li>
+        <li>
+          Separe as palavras possíveis em grupos, e exiba uma dica
+          correspondente para o jogador. Por exemplo: animal, cidade,
+          fruta.
+        </li>
+        <li>
+          Permita que palavras novas sejam cadastradas pelo jogador antes
+          de iniciar uma partida.
+        </li>
+        <li>
+          Permita que grupos novos sejam cadastrados pelo jogador antes de
+          iniciar a partida.
+        </li>
+        <li>
+          Utilize palavras compostas com espaço na sua lista de palavras,
+          por exemplo: São Paulo, Arco e flecha, Futebol de botão. Garanta
+          que elas sejam exibidas adequadamente, isto é, não deve existir
+          um tracinho no lugar dos espaços. Para São Paulo, por exemplo:
+
+          <pre class="clearfix">
+ _ _ _  _ _ _ _ _
+          </pre>
+        </li>
+        <li>
+          Garanta que, se o usuário digitar "a" para a palavra São Paulo,
+          as duas vogais sejam marcadas:
+
+          <pre>_ ã _  _ a _ _ _</pre>
+        </li>
+        <li>
+          Desafio: exiba um desenho da forca (pode ser um desenho feito
+          com caracteres) de acordo com a quantidade de vidas restantes
+        </li>
+        <li>
+          Desafio: permita que dois jogadores joguem ao mesmo tempo, um
+          contra o outro -- vence quem adivinhar a palavra.
+        </li>
+      </ol>
+
+      <h2>Lista 3: Trabalhando com coleções</h2>
+
+      <figure class="confusao">
+        <img src="confusao.jpg"></img>
+        <figcaption>Agora lascou.</figcaption>
+      </figure>
+
+      <p>
+        Para os exercícios desta lista, evite utilizar funções que já
+        existem na biblioteca padrão do PHP. Por exemplo, não utilize a
+        função <code>max</code> para resolver o primeiro exercício. Em
+        vez disso, crie a sua própria função utilizando os elementos
+        básicos da linguagem PHP.
+      </p>
+
+      <p>
+        A sequência dos exercícios desta lista é apenas uma sugestão,
+        do mais fácil ao mais difícil, mas pode ser feita em qualquer
+        ordem desejada.
+      </p>
+
+      <p>
+        O formato de entrega deve ser um arquivo com as definições
+        das funções dos exercícios, pelo menos uma para cada exercício.
+        A função <strong>obrigatoriamente</strong> recebe como parâmetro
+        um array e retorna (<code>return ...;</code>) o que estiver descrito
+        em "saída". A função
+        deve funcionar com qualquer array de input razoável, sendo que
+        a "entrada" e a "saída" são apenas exemplos.
+      </p>
+
+      <ol class="exercicios">
+        <li>
+          Escreva uma função que receba um array de valores numéricos e
+          retorne o valor mais alto.
+
+          <br/>
+          <br/>
+          entrada: <code>[1, 5, 7, 8, 1, 20]</code>
+          <br/>
+          saída: <code>20</code>
+        </li>
+        <li>
+          Escreva uma função que receba um array de valores numéricos e
+          retorne a soma dos valores.
+
+          <br/>
+          <br/>
+          entrada: <code>[1, 5, 7, 1]</code>
+          <br/>
+          saída: <code>14</code>
+        </li>
+        <li>
+          Escreva uma função que receba dois arrays e retorne um array de
+          valores intercalados.
+
+          <br/>
+          <br/>
+          entrada: <code>[1, 5, 7, 1]</code>
+          <br/>
+          saída: <code>14</code>
+        </li>
+        <li>
+          Escreva uma função como a anterior, mas que retorne um array de
+          pares.
+
+          <br/>
+          <br/>
+          entrada: <code>[1, 2, 3, 4], ['a', 'b', 'c', 'd']</code>
+          <br/>
+          saída: <code>[[1, 'a'], [2, 'b'], [3, 'c'], [4, 'd']]</code>
+        </li>
+        <li>
+          Escreva uma função que embaralhe um array.
+          <br/>
+          <br/>
+          entrada: <code>[1, 2, 3, 4, 5]</code>
+          <br/>
+          saída: <code>[5, 2, 4, 1, 3]</code>
+        </li>
+        <li>
+          Escreva uma função que receba um array associativo e um array de
+          strings, e retorne uma versão do primeiro array somente com as
+          chaves do segundo.
+
+          <br/>
+          <br/>
+          entrada: <code>['nome' => 'Jacó', 'idade' => 74, 'profissão' => 'ancião'],
+          ['nome', 'profissão']</code>
+          <br/>
+          saída: <code>['nome' => 'Jacó', 'profissão' => 'ancião']</code>
+        </li>
+        <li>
+          Escreva uma função que ordene um array.
+
+          <br/>
+          <br/>
+          entrada: <code>[1, 5, 2, 4, 3]</code>
+          <br/>
+          saída: <code>[1, 2, 3, 4, 5]</code>
+        </li>
+        <li>
+          Escreva uma função que remova valores duplicados de um array.
+          <br/>
+          <br/>
+          entrada: <code>[1, 2, 3, 3, 4, 5, 4]</code>
+          <br/>
+          saida: <code>[1, 2, 3, 4, 5]</code>
+        </li>
+        <li>
+          Escreva uma função que reverta um array.
+          
+          <br/>
+          <br/>
+          entrada: <code>[1, 2, 3, 4, 5]</code>
+          <br/>
+          saída: <code>[5, 4, 3, 2, 1]</code>
+        </li>
+        <li>
+          Desafio: escreva uma função que achate um array
+          multidimensional.
+
+          <br/>
+          <br/>
+          entrada: <code>[1, [1, 2], [1, [2, 3], 4]]</code>
+          <br/>
+          saída: <code>[1, 1, 2, 1, 2, 3, 4]</code>
+        </li>
+      </ol>
+
+      <h2>Lista 4: trabalhando com o banco de dados</h2>
+
+      <figure class="stats">
+        <img src="stats.png"></img>
+        <figcaption>Vender, vender, vender!</figcaption>
+      </figure>
+
+      <p class="intro-4">
+        Para essa lista de exercícios, vamos precisar de um banco de dados
+        instalado na máquina. Eu recomendo o SQLite3 no Linux, e o MySQL no
+        Windows, por questão de facilidade de instalação.
+      </p>
+
+      <ol class="exercicios clearfix">
+        <li>
+          Instale o banco de dados na sua máquina e configure a
+          conexão a partir do PHP.
+        </li>
+        <li>
+          Crie uma aplicação para controlar o estoque de uma papelaria. O
+          usuário precisa conseguir cadastrar os itens do estoque junto da
+          quantidade inicial de cada item, e depois registrar as entradas
+          e saídas de cada item. A qualquer momento, ele precisa conseguir
+          gerar um relatório da situação atual do estoque, além de
+          consultar a situação de algum item específico. Esse relatório
+          precisa ser salvo num arquivo ou impresso em tela, a escolha do
+          usuário.
+        </li>
+        <li>
+          Guarde um registro de cada movimentação do estoque. Permita que
+          o usuário gere um relatório da movimentação do estoque de
+          determinado item.
+        </li>
+        <li>
+          Permita que o usuário gere um relatório da movimentação do
+          estoque por período.
+        </li>
+      </ol>
+
+      <h2>Projeto final</h2>
+
+      <figure class="graduation">
+        <img src="graduation.jpg"></img>
+        <figcaption>Aguardando a graduação...</figcaption>
+      </figure>
+
+      <p>
+        Para a sua graduação, você terá que desenvolver um sistema WEB
+        de sua escolha, com os seguintes requisitos:
+      </p>
+
+      <ul>
+        <li>CRUD de pelo menos um recurso</li>
+        <li>Impressão de pelo menos um relatório</li>
+        <li><strong>Não</strong> pode ter autenticação, isto é, não pode ter login e nem permissões</li>
+        <li>Precisa resolver algum problema real, mesmo que em escala reduzida</li>
+      </ul>
+
+      Deve ser obrigatoriamente desenvolvido com as seguintes tecnologias:
+
+      <ul>
+        <li>Laravel na versão mais recente</li>
+        <li>Bootstrap 4</li>
+      </ul>
+      
+      <p>
+        Você <strong>não</strong> pode criar uma Single Page
+        Application, isto é, nada de utilizar Vue, React e
+        companhia. As páginas devem ser renderizadas no back-end,
+        utilizando a linguagem de layout Blade, do próprio
+        Laravel. Javascript só pode ser utilizado para melhoria
+        progressiva (progressive enhancement) da página: quer dizer
+        que ela precisa funcionar (pelo menos num nível básico) mesmo
+        sem JavaScript, mas pode ter funcionalidades que melhoram a
+        experiência do usuário quando o JavaScript estiver ativado,
+        como busca em tempo real, efeitos visuais etc..
+      </p>
+
+      <p>
+        É recomendado o uso da biblioteca JQuery para a manipulaçào
+        da página com JavaScript.
+      </p>
+
+      <p>
+        Antes de começar, valide o seu projeto com o responsável
+        pelo treinamento. Uma vez que a aplicação inicial do Laravel
+        esteja configurada e conectada com o banco de dados, aguarde
+        uma aula introdutória de desenvolvimento WEB com o responsável
+        pelo treinamento antes de iniciar o desenvolvimento do
+        projeto. Enquanto isso, vá lendo a documentação do Laravel,
+        que é excelente, ou reforçando os conhecimentos básicos de
+        HTML e CSS.
+      </p>
+
+      <p>
+        <strong>Orientação importante</strong>: ao contrário das
+        listas de exercicios, é recomendado que sejam feitas
+        orientações regulares no decorrer do desenvolvimento do
+        projeto final, e não apenas na revisão final. Possivelmente
+        uma vez ao dia, ou uma vez a cada dois dias. Então faça o
+        melhor que puder por conta própria, mas organize suas dúvidas
+        e prepare-se para apresentar o andamento do projeto
+        regularmente.
+      </p>
+
+      <p>
+        O prazo esperado para conclusão desta etapa final do
+        treinamento é entre uma e duas semanas, mas desvios podem
+        ocorrer. Em caso de dúvida, converse com o responsável
+        pelo treinamento.
+      </p>
+    </main>
+  </body>
+</html>
